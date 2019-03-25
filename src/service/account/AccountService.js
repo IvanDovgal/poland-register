@@ -85,8 +85,8 @@ export default class AccountService {
             transform,
           });
         } catch (e) {
-          console.log(e);
-          return true;
+          if (e.statusCode === 302) return true;
+          throw new Error('http error');
         }
         if (registerResult('.validation-summary-errors').length) {
           if (registerResult.html().indexOf('Invalid reCAPTCHA') > 0) {
