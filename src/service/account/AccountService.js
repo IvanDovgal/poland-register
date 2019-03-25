@@ -76,7 +76,9 @@ export default class AccountService {
       try {
         await defer(40000);
         const registerResult = await request.post({
-          url: 'https://online.vfsglobal.com/GlobalAppointment/Account/RegisterUser', jar, form: {
+          url: 'https://online.vfsglobal.com/GlobalAppointment/Account/RegisterUser',
+          jar,
+          form: {
             __RequestVerificationToken: requestVerificationToken,
             IsGoogleCaptchaEnabled,
             reCaptchaURL,
@@ -90,13 +92,19 @@ export default class AccountService {
             ConfirmPassword: password,
             CaptchaDeText: captchaId,
             CaptchaInputText: captchaText,
-          }, transform,
+          },
+          transform,
         });
+        if (registerResult.html().includes('Invalid reCAPTCHA')) {
+          throw new Error('captcha error');
+        }
+        if (registerResult('.validation-summary-errors').length) {
+          throw new Error('unknown error');
+        }
       } catch (e) {
-        console.log(e);
         return true;
       }
     }
-    return false;
+    return true;
   }
 }
