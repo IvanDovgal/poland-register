@@ -95,7 +95,7 @@ export default class AccountService {
           },
           transform,
         });
-        if (registerResult.html().includes('Invalid reCAPTCHA')) {
+        if (registerResult.html().indexOf('Invalid reCAPTCHA') > 0) {
           throw new Error('captcha error');
         }
         if (registerResult('.validation-summary-errors').length) {
