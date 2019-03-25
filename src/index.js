@@ -77,11 +77,11 @@ const register = async (options) => {
   await Promise.all([p1, p2]);
 }
 (async () => {
-  await register({
+  console.log(await register({
     password: 'C@rbon1278',
     firstName: 'Georg',
     lastName: 'Hatz',
-    userName: 'testuser999@45.79.213.78',
+    userName: 'testuser998@45.79.213.78',
     contactNumber: '99342992',
-  });
+  }));
 })();
