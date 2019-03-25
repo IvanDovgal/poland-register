@@ -65,12 +65,12 @@ const accountService = new AccountService({ mailService });
 
 
 (async () => {
-  const p1 = mailService.receive('root007@45.79.213.78');
+  const p1 = mailService.receive('root097@45.79.213.78');
   const p2 = accountService.register({
     password: 'C@rbon1278',
     firstName: 'Georg',
     lastName: 'Hatz',
-    userName: 'root007@45.79.213.78',
+    userName: 'root097@45.79.213.78',
     contactNumber: '99355992',
   });
   console.log(await Promise.all([p1, p2]));
