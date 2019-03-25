@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:latest
+    expose:
+      - 5432
+    ports:
+      - 5432:5432
+  api:
+    image: node
+    working_dir: /app
+    command: sh -c "npm install && NODE_ENV=production npm start"
+    expose:
+      - 3000
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/app
+    links:
+      - db
+    environment:
+      - PGHOST=db
+      - PGDATABASE=postgres
+      - PGUSER=postgres

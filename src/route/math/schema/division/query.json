@@ -1,0 +1,14 @@
+{
+  "type": "object",
+  "properties": {
+    "a": {
+      "type": "string",
+      "pattern": "\\d+"
+    },
+    "b": {
+      "type": "string",
+      "pattern": "\\d+"
+    }
+  },
+  "required": ["a", "b"]
+}
