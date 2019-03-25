@@ -55,7 +55,7 @@ const startServer = async ({ port }) => {
 startServer({ port: PORT }).then(() => {});
 */
 const mailService = new MailService();
-const smtpServer = SMTPServer({
+const smtpServer = new SMTPServer({
   name: '45.79.213.78',
   authOptional: true,
   onData: mailService.onDataHandler.bind(mailService),
