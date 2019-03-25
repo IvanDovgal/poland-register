@@ -7,6 +7,8 @@ import createApp from './app';
 import createPostgresLogStreamAsync from './misc/postgresLogStream';
 import AccountService from './service/account/AccountService';
 import MailService from './service/mail/MailService';
+import cheerio from 'cheerio';
+import request from 'request-promise-native';
 
 /*
 const PORT = process.env.PORT || 3000;
@@ -63,15 +65,23 @@ const smtpServer = new SMTPServer({
 smtpServer.listen(25);
 const accountService = new AccountService({ mailService });
 
+const activate = async  (email) => {
+  const { html } = await mailService.receive(email);
+  const activateUrl = cheerio.load(html)('a').first().attr('href');
+  await request(activateUrl);
+}
 
+const register = async (options) => {
+  const p1 = activate(options.userName);
+  const p2 = accountService.register(options);
+  await Promise.all([p1, p2]);
+}
 (async () => {
-  const p1 = mailService.receive('uroot097@45.79.213.78');
-  const p2 = accountService.register({
+  await register({
     password: 'C@rbon1278',
     firstName: 'Georg',
     lastName: 'Hatz',
-    userName: 'uroot097@45.79.213.78',
-    contactNumber: '99355992',
+    userName: 'testuser999@45.79.213.78',
+    contactNumber: '99342992',
   });
-  console.log(await Promise.all([p1, p2]));
 })();
