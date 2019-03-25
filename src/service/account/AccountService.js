@@ -73,9 +73,10 @@ export default class AccountService {
         tryCount++;
       } while (captchaResultResponse.status !== 1);
       const captchaText = captchaResultResponse.request;
+      let registerResult;
       try {
         await defer(40000);
-        const registerResult = await request.post({
+        registerResult = await request.post({
           url: 'https://online.vfsglobal.com/GlobalAppointment/Account/RegisterUser',
           jar,
           form: {
@@ -95,14 +96,14 @@ export default class AccountService {
           },
           transform,
         });
-        if (registerResult.html().indexOf('Invalid reCAPTCHA') > 0) {
-          throw new Error('captcha error');
-        }
-        if (registerResult('.validation-summary-errors').length) {
-          throw new Error('unknown error');
-        }
       } catch (e) {
         return true;
+      }
+      if (registerResult.html().indexOf('Invalid reCAPTCHA') > 0) {
+        throw new Error('captcha error');
+      }
+      if (registerResult('.validation-summary-errors').length) {
+        throw new Error('unknown error');
       }
     }
     return true;
