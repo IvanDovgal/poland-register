@@ -5,22 +5,20 @@ async function extractBody(stream) {
   return { textAsHtml, text, html };
 }
 
-const onDataHandler = async (stream, session, callback) => {
-  await Promise.all(session.envelope.rcptTo.map(async ({ address }) => {
-    const resolve = this.map.get(address);
-    if (resolve) {
-      this.map.delete(address);
-      resolve(await extractBody(stream));
-    }
-  }));
-  callback();
-};
-
 export default class MailService {
   map = new Map();
 
   onDataHandler(stream, session, callback) {
-    onDataHandler(stream, session, callback);
+    (async () => {
+      await Promise.all(session.envelope.rcptTo.map(async ({ address }) => {
+        const resolve = this.map.get(address);
+        if (resolve) {
+          this.map.delete(address);
+          resolve(await extractBody(stream));
+        }
+      }));
+      callback();
+    })(stream, session, callback);
   }
 
 
