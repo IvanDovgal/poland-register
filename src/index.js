@@ -56,18 +56,22 @@ startServer({ port: PORT }).then(() => {});
 */
 const mailService = new MailService();
 const smtpServer = SMTPServer({
-  authOptional: true, onData: mailService.onDataHandler.bind(mailService),
+  name: '45.79.213.78',
+  authOptional: true,
+  onData: mailService.onDataHandler.bind(mailService),
 });
 smtpServer.listen(25);
 const accountService = new AccountService({ mailService });
 
 
 (async () => {
-  console.log(await accountService.register({
+  const p1 = mailService.receive('root99@45.79.213.78');
+  const p2 = accountService.register({
     password: 'C@rbon1278',
     firstName: 'Georg',
     lastName: 'Hatz',
-    userName: 'root@45.79.213.78',
+    userName: 'root99@45.79.213.78',
     contactNumber: '99355992',
-  }));
+  });
+  console.log(await Promise.all([p1, p2]));
 })();
